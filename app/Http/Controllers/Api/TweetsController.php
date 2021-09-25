@@ -23,8 +23,9 @@ class TweetsController extends Controller
      */
     public function index(Request $request)
     {
+
         // dd( $request->header('User-Agent'));
-        $tweets = Tweet::with('user:id,name,type','tweetComments.user:id,name')->paginate(3);
+        $tweets = Tweet::with('user:id,name,type,council_id','tweetComments.user:id,name,council_id')->paginate(3);
         return  response()->json([
             'status' => [
                 'code' => 200,

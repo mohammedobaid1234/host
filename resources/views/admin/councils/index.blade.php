@@ -23,7 +23,7 @@
             <tbody>
                 @foreach($councils as $council)
                 <tr>
-                    <th scope="row">{{$loop->first? 'الأول' : ($loop->last? 'الأخير' : $loop->iteration)}}</th>
+                    <th scope="row">{{ $loop->iteration }}</th>
 
                     <th scope="row"><a href="{{route('council.checkChildren', $council->id)}}">{{ $council->name }}</a></th>
                     {{-- @if ($council->id == 5)

@@ -28,7 +28,7 @@
                     </th>
                     <th scope="row" >{{$article->title}}</th>
                     <th scope="row" class="report"
-                    ><a href="{{$article->article_url}}">{{$article->article_url}}</a></th>
+                    ><a href= "https://{{ $article->article_url}}">{{$article->article_url}}</a></th>
                     <th scope="row" >{{$article->created_at}}</th>
                     
                     <td>

@@ -31,7 +31,7 @@
                     <td scope="row"style="
                     width: 200px;
                     word-wrap: break-word;
-                    display: inline-block;"><a href="{{$video->video_url}}">{{$video->video_url}}</a></td>
+                    display: inline-block;"><a href="https://{{$video->video_url}}">{{$video->video_url}}</a></td>
                     <td scope="row">{{$video->created_at}}</td>
                     <td>
                         <a class="btn btn-sm btn-primary" href='{{route('videos.edit', [$video->id])}}'>

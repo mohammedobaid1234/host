@@ -49,7 +49,7 @@ class SectionsController extends Controller
     public function sectionStore(Request $request,$id)
     {
         $request->validate([
-            'name' => ['required']
+            'name' => ['required','unique:councils,name']
         ]);
         $request->merge(['parent_id' => $id]);
         Council::create($request->all());
@@ -79,57 +79,23 @@ class SectionsController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+   public function update(Request $request, $id)
+   {
+       $section = Council::findOrFail($id);
+       $section->update($request->all());
+       return redirect()->back()->with(['success' => 'تم تعديل القسم بنجاح']);
+   }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $section = Council::findOrFail($id);
-        $type = $section->load('parent');
-        $type = $type->parent->type ;
-        return view('admin.sections.edit',[
-            'section' => $section ,
-            'title' => " تعديل القسم",
-            'type' => "ال".$type   
-        ]);
-    }
+ 
+   public function destroy($id)
+   {
+       // dd('dd');
+       $section = Council::where('id', $id)->first();
+       $section->delete();
+       return  redirect()->route('councils.index')->with(['success' => 'تم حذف القسم بنجاح']);
+   }
+  
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $section = Council::findOrFail($id);
-        $section->delete();
-        redirect()->back()->with(['success' => 'تم حذف القسم بنجاح']);
-    }
+  
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }

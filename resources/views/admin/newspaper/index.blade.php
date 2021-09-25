@@ -26,7 +26,7 @@
                         <img width="100px" src="{{$newspaper->image_path}}" alt="..." />
                     </td>
                     <td scope="row">{{$newspaper->title}}</td>
-                    <td scope="row" class="report"><a href="{{$newspaper->newspaper_url}}">{{$newspaper->newspaper_url}}</a></td>
+                    <td scope="row" class="report"><a href="https://{{$newspaper->newspaper_url}}">{{$newspaper->newspaper_url}}</a></td>
                     <td scope="row">{{$newspaper->created_at}}</td>
                     
                     <td>

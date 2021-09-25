@@ -44,7 +44,7 @@ class CouncilsController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|min:5'
+            'name' => 'required|string|min:5|unique:councils,name'
         ]);
         $council =  Council::create($request->all());
         if ($request->post('parent_id')) {

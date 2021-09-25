@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\LikesController;
 use App\Http\Controllers\Api\NotificationsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Whoops\RunInterface;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,28 +32,31 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('auth/check', [AccessTokenController::class, 'checkUser']);
-Route::post('auth/tokens', [AccessTokenController::class , 'store']);
+Route::post('auth/code', [AccessTokenController::class, 'receiveCode']);
+Route::post('auth/tokens', [AccessTokenController::class, 'store']);
 Route::delete('auth/tokens', [AccessTokenController::class, 'destroy'])
     ->middleware('auth:sanctum');
 
-Route::apiResource('tweets',TweetsController::class);
+Route::apiResource('tweets', TweetsController::class);
 
-Route::apiResource('councils',CouncilsController::class);
+Route::apiResource('councils', CouncilsController::class);
 
-Route::apiResource('reports',ReportsController::class);
+Route::apiResource('reports', ReportsController::class);
 
-Route::get('today-article' , [ArticlesController::class, 'articleToday']);
-Route::apiResource('articles',ArticlesController::class);
+Route::get('today-article', [ArticlesController::class, 'articleToday']);
+Route::apiResource('articles', ArticlesController::class);
 
-Route::get('today-video' , [VideosController::class, 'videoToday']);
-Route::apiResource('videos',VideosController::class);
+Route::get('today-video', [VideosController::class, 'videoToday']);
+Route::apiResource('videos', VideosController::class);
 
-Route::get('today-newspaper' , [NewspapersController::class, 'newspaperToday']);
-Route::apiResource('newspapers',NewspapersController::class);
+Route::get('today-newspaper', [NewspapersController::class, 'newspaperToday']);
+Route::apiResource('newspapers', NewspapersController::class);
 
-Route::apiResource('users',UsersController::class);
-Route::apiResource('favorites',FavoritesController::class);
-Route::apiResource('comments',CommentsController::class);
-Route::apiResource('likes',LikesController::class);
+Route::apiResource('users', UsersController::class);
+Route::apiResource('favorites', FavoritesController::class);
+Route::apiResource('comments', CommentsController::class);
+Route::apiResource('likes', LikesController::class);
 
 Route::get('notifications/{id}', [NotificationsController::class, 'index']);
+
+Route::get('main', [ReportsController::class, 'main']);
