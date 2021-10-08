@@ -24,7 +24,7 @@ class TweetsController extends Controller
     public function index(Request $request)
     {
         // dd( $request->header('User-Agent'));
-        $tweets = Tweet::with('user:id,name,type','tweetComments.user:id,name')->paginate(3);
+        $tweets = Tweet::with('user:id,name,type,council_id','tweetComments.user:id,name')->paginate(3);
         return  response()->json([
             'status' => [
                 'code' => 200,
@@ -47,7 +47,7 @@ class TweetsController extends Controller
     public function store(Request $request)
     {
         $user = User::where('id', $request->post('user_id'))->firstOrFail();
-        if($user->type == 'عضو فعال') {
+        if($user->type == 1) {
             return  response()->json([
                 'status' => [
                     'code' => 403,
@@ -96,7 +96,7 @@ class TweetsController extends Controller
      */
     public function show($id)
     {
-        $tweet = Tweet::with(['user:id,name','tweetComments.user:id,name'])->find($id);
+        $tweet = Tweet::with(['user:id,name,council_id','tweetComments.user:id,name,council_id'])->find($id);
         if(!$tweet){
             return  response()->json([
                 'status' => [

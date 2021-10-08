@@ -31,6 +31,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('auth/check', [AccessTokenController::class, 'checkUser']);
+Route::post('auth/code/send',[AccessTokenController::class , 'receiveCode']);
+Route::post('auth/code/check',[AccessTokenController::class , 'checkCode']);
 Route::post('auth/tokens', [AccessTokenController::class , 'store']);
 Route::delete('auth/tokens', [AccessTokenController::class, 'destroy'])
     ->middleware('auth:sanctum');

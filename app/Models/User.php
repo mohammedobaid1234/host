@@ -31,7 +31,8 @@ class User extends Authenticatable
         'email',
         'password',
         'image_url',
-        'council_id'
+        'council_id',
+        'code'
     ];
 
     /**
@@ -45,6 +46,7 @@ class User extends Authenticatable
         'image_url',
         'created_at',
         'updated_at',
+        'code'
         
     ];
 
@@ -130,4 +132,5 @@ class User extends Authenticatable
         }
         return 'أدمن';
     }
+    
 }

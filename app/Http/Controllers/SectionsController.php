@@ -14,7 +14,7 @@ class SectionsController extends Controller
      */
     public function index()
     {
-        //
+      
     }
     public function newCreate()
     {
@@ -35,7 +35,7 @@ class SectionsController extends Controller
         $council = Council::whereNull('parent_id')->findOrFail($id);
        
         // return $councils;
-        if($council->id == 3 || $council->id == 5){
+        if($council->name == "المجلس الطلابي" || $council->name == "مجالس النوادي"){
             return redirect()->route('home.index');
         }
         return view('admin.sections.create-section', [
@@ -49,7 +49,7 @@ class SectionsController extends Controller
     public function sectionStore(Request $request,$id)
     {
         $request->validate([
-            'name' => ['required']
+            'name' => ['required','unique:councils,name']
         ]);
         $request->merge(['parent_id' => $id]);
         Council::create($request->all());
@@ -118,8 +118,8 @@ class SectionsController extends Controller
     public function update(Request $request, $id)
     {
         $section = Council::findOrFail($id);
-        $section->delete();
-        redirect()->back()->with(['success' => 'تم حذف القسم بنجاح']);
+        $section->update($request->all());
+        return redirect()->back()->with(['success' => 'تم تعديل القسم بنجاح']);
     }
 
     /**
@@ -130,6 +130,9 @@ class SectionsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // dd('dd');
+        $section = Council::where('id', $id)->first();
+        $section->delete();
+        return  redirect()->route('councils.index')->with(['success' => 'تم حذف القسم بنجاح']);
     }
 }

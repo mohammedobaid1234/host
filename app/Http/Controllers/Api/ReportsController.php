@@ -22,7 +22,7 @@ class ReportsController extends Controller
                 'status' => true,
                 'message' => ' الأخبار'
             ],
-            'data' => Report::select(['title','body'])->paginate(3)
+            'data' => Report::select(['id','title','body'])->paginate(3)
         ],
          200); 
         // return Report::select(['title','body'])->paginate(3);
@@ -47,7 +47,7 @@ class ReportsController extends Controller
      */
     public function show($id)
     {
-        $report =  Report::where('id',$id)->first(['title','body']);
+        $report =  Report::where('id',$id)->first(['id','title','body']);
         if(!$report){
             return  response()->json([
                 'status' => [
@@ -91,6 +91,6 @@ class ReportsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        
     }
 }
