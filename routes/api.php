@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\aboutAppContoller;
 use App\Http\Controllers\Api\AccessTokenController;
 use App\Http\Controllers\Api\ArticlesController;
 use App\Http\Controllers\Api\ReportsController;
@@ -58,3 +59,7 @@ Route::apiResource('comments',CommentsController::class);
 Route::apiResource('likes',LikesController::class);
 
 Route::get('notifications/{id}', [NotificationsController::class, 'index']);
+
+Route::get('about', [aboutAppContoller::class , 'index']);
+Route::get('main', [CouncilsController::class , 'index']);
+

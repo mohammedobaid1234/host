@@ -14,7 +14,7 @@ class ReportsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         return  response()->json([
             'status' => [
@@ -22,7 +22,7 @@ class ReportsController extends Controller
                 'status' => true,
                 'message' => ' الأخبار'
             ],
-            'data' => Report::select(['id','title','body'])->paginate(3)
+            'data' => Report::select(['id','title','body'])->paginate($request->page_size)
         ],
          200); 
         // return Report::select(['title','body'])->paginate(3);

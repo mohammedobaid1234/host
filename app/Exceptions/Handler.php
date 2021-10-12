@@ -63,7 +63,7 @@ class Handler extends ExceptionHandler
                         'status' => false,
                         'message' => 'validation'
                     ],
-                    'message' => 'يجب عليك تسجيل الدخول'
+                    'message' => 'الرابط غير موجود '
                 ], 401);
             }
         });

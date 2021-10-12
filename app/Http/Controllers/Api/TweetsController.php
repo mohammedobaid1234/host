@@ -24,7 +24,7 @@ class TweetsController extends Controller
     public function index(Request $request)
     {
         // dd( $request->header('User-Agent'));
-        $tweets = Tweet::with('user:id,name,type,council_id','tweetComments.user:id,name')->paginate(3);
+        $tweets = Tweet::with('user:id,name,type,council_id','tweetComments.user:id,name')->paginate($request->page_size);
         return  response()->json([
             'status' => [
                 'code' => 200,
@@ -33,7 +33,7 @@ class TweetsController extends Controller
             ],
             'data' => $tweets
         ],
-         404); 
+         200); 
         // return new JsonResponse($tweets);
     }
     // PostmanRuntime/7.28.4

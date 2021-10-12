@@ -13,7 +13,7 @@ class ArticlesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         
         return  response()->json([
@@ -22,7 +22,7 @@ class ArticlesController extends Controller
                 'status' => true,
                 'message' => ' مقالات'
             ],
-            'data' => Article::paginate(3)
+            'data' => Article::paginate($request->page_size)
         ],
          200); 
         

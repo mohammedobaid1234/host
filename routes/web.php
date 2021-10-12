@@ -1,5 +1,6 @@
 <?php
 
+
 use App\Http\Controllers\Admin\ArticlesController;
 use App\Http\Controllers\Admin\CouncilsController;
 use App\Http\Controllers\Admin\HomeController;
@@ -54,6 +55,7 @@ Route::prefix('admin')
     Route::get('/sections/create/{id}', [SectionsController::class, 'createSection'])->name('sections.create');
     
     Route::get('/councils/show/{id}', [CouncilsController::class, 'checkChildren'])->name('council.checkChildren');
+
 });
 
 require __DIR__.'/auth.php';

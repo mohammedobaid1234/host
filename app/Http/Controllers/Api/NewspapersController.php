@@ -13,7 +13,7 @@ class NewspapersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         return  response()->json([
             'status' => [
@@ -21,7 +21,7 @@ class NewspapersController extends Controller
                 'status' => true,
                 'message' => ' الجرائد الالكترونية'
             ],
-            'data' => Newspaper::paginate(3)
+            'data' => Newspaper::paginate($request->page_size)
         ],
          200); 
         // return Newspaper::paginate(3);

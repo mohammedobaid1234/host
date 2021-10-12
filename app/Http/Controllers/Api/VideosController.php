@@ -13,7 +13,7 @@ class VideosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         return  response()->json([
             'status' => [
@@ -21,7 +21,7 @@ class VideosController extends Controller
                 'status' => true,
                 'message' => ' مقاطع الفيديو'
             ],
-            'data' => Video::paginate(3)
+            'data' => Video::paginate($request->page_size)
         ],
          200);
         // return Video::paginate(3);
