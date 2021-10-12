@@ -67,7 +67,7 @@ class AccessTokenController extends Controller
         $request->validate([
             'phone_number' => ['required'],
             'device_name' => ['required'],
-            'code' => ['required']
+            // 'code' => ['required']
         ]);
         $phone = trim($request->phone_number);
 

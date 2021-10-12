@@ -13,20 +13,20 @@ class ArticlesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        
-        return  response()->json([
-            'status' => [
-                'code' => 200,
-                'status' => true,
-                'message' => ' مقالات'
-            ],
-            'data' => Article::paginate(3)
-        ],
-         200); 
-        
 
+        return  response()->json(
+            [
+                'status' => [
+                    'code' => 200,
+                    'status' => true,
+                    'message' => ' مقالات'
+                ],
+                'data' => Article::paginate($request->page_size)
+            ],
+            200
+        );
     }
 
     /**
@@ -48,41 +48,46 @@ class ArticlesController extends Controller
      */
     public function show($id)
     {
-        $article =  Article::where('id',$id)->first(['id','title', 'article_url', 'image_url',]);
-        if(!$article){   
-            return  response()->json([
-                'status' => [
-                    'code' => 404,
-                    'status' => false,
-                    'message' => 'هذا المقال غير موجود'
+        $article =  Article::where('id', $id)->first(['id', 'title', 'article_url', 'image_url',]);
+        if (!$article) {
+            return  response()->json(
+                [
+                    'status' => [
+                        'code' => 404,
+                        'status' => false,
+                        'message' => 'هذا المقال غير موجود'
+                    ],
+                    'data' => null
                 ],
-                'data' => null
-            ],
-             404); 
+                404
+            );
         }
-        return  response()->json([
-            'status' => [
-                'code' => 200,
-                'status' => true,
-                'message' => 'هذا المقال موجود'
+        return  response()->json(
+            [
+                'status' => [
+                    'code' => 200,
+                    'status' => true,
+                    'message' => 'هذا المقال موجود'
+                ],
+                'data' => $article
             ],
-            'data' => $article
-        ],
-         200); 
-        
+            200
+        );
     }
 
     public function articleToday()
     {
-        return  response()->json([
-            'status' => [
-                'code' => 200,
-                'status' => true,
-                'message' => ' مقال اليوم'
+        return  response()->json(
+            [
+                'status' => [
+                    'code' => 200,
+                    'status' => true,
+                    'message' => ' مقال اليوم'
+                ],
+                'data' => Article::latest()->first()
             ],
-            'data' => Article::latest()->first()
-        ],
-         404); 
+            404
+        );
         // return Article::latest()->first();
     }
     /**

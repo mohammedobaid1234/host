@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\aboutAppContoller;
 use App\Http\Controllers\Api\AccessTokenController;
 use App\Http\Controllers\Api\ArticlesController;
 use App\Http\Controllers\Api\ReportsController;
@@ -37,6 +38,9 @@ Route::post('auth/tokens', [AccessTokenController::class, 'store']);
 Route::delete('auth/tokens', [AccessTokenController::class, 'destroy'])
     ->middleware('auth:sanctum');
 
+Route::get('about', [aboutAppContoller::class, 'index']);
+
+
 Route::apiResource('tweets', TweetsController::class);
 
 Route::apiResource('councils', CouncilsController::class);
@@ -57,6 +61,7 @@ Route::apiResource('favorites', FavoritesController::class);
 Route::apiResource('comments', CommentsController::class);
 Route::apiResource('likes', LikesController::class);
 
-Route::get('notifications/{id}', [NotificationsController::class, 'index']);
+Route::get('notifications', [NotificationsController::class, 'index']);
+Route::delete('notifications/{id}', [NotificationsController::class, 'delete']);
 
 Route::get('main', [ReportsController::class, 'main']);

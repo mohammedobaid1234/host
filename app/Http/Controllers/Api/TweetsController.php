@@ -23,18 +23,19 @@ class TweetsController extends Controller
      */
     public function index(Request $request)
     {
-
         // dd( $request->header('User-Agent'));
-        $tweets = Tweet::with('user:id,name,type,council_id','tweetComments.user:id,name,council_id')->paginate(3);
-        return  response()->json([
-            'status' => [
-                'code' => 200,
-                'status' => true,
-                'message' => ' التغريدات'
+        $tweets = Tweet::with('user:id,name,type,council_id', 'tweetComments.user:id,name,council_id')->paginate($request->page_size);
+        return  response()->json(
+            [
+                'status' => [
+                    'code' => 200,
+                    'status' => true,
+                    'message' => ' التغريدات'
+                ],
+                'data' => $tweets
             ],
-            'data' => $tweets
-        ],
-         404); 
+            200
+        );
         // return new JsonResponse($tweets);
     }
     // PostmanRuntime/7.28.4
@@ -48,16 +49,18 @@ class TweetsController extends Controller
     public function store(Request $request)
     {
         $user = User::where('id', $request->post('user_id'))->firstOrFail();
-        if($user->type == 'عضو فعال') {
-            return  response()->json([
-                'status' => [
-                    'code' => 403,
-                    'status' => false,
-                    'message' => 'هذه العملية غير مسموحة'
+        if ($user->type == 'عضو فعال') {
+            return  response()->json(
+                [
+                    'status' => [
+                        'code' => 403,
+                        'status' => false,
+                        'message' => 'هذه العملية غير مسموحة'
+                    ],
+                    'data' => null
                 ],
-                'data' => null
-            ],
-             403);
+                403
+            );
             // return new JsonResponse([
             //     'message' => 'هذه العملية غير مسموحة'
             // ], 403);
@@ -77,18 +80,20 @@ class TweetsController extends Controller
         $tweet = Tweet::create($request->all());
         $users = User::where('id', '<>', $tweet->user_id)->get();
         Notification::send($users, new TweetCreatedNotification($tweet));
-        return  response()->json([
-            'status' => [
-                'code' => 201,
-                'status' => true,
-                'message' => 'تم اضافة التغريدة'
+        return  response()->json(
+            [
+                'status' => [
+                    'code' => 201,
+                    'status' => true,
+                    'message' => 'تم اضافة التغريدة'
+                ],
+                'data' => $tweet->load('user:name,id')
             ],
-            'data' => $tweet->load('user:name,id')
-        ],
-         201);
+            201
+        );
         // return new JsonResponse($tweet->load('user:name,id'), 201);
     }
-    
+
     /**
      * Display the specified resource.
      *
@@ -97,30 +102,34 @@ class TweetsController extends Controller
      */
     public function show($id)
     {
-        $tweet = Tweet::with(['user:id,name','tweetComments.user:id,name'])->find($id);
-        if(!$tweet){
-            return  response()->json([
-                'status' => [
-                    'code' => 404,
-                    'status' => false,
-                    'message' => 'هذا التغريدة غير موجود'
+        $tweet = Tweet::with(['user:id,name', 'tweetComments.user:id,name'])->find($id);
+        if (!$tweet) {
+            return  response()->json(
+                [
+                    'status' => [
+                        'code' => 404,
+                        'status' => false,
+                        'message' => 'هذا التغريدة غير موجود'
+                    ],
+                    'data' => null
                 ],
-                'data' => null
-            ],
-             404);
+                404
+            );
         }
-        return  response()->json([
-            'status' => [
-                'code' => 200,
-                'status' => true,
-                'message' => 'هذه التغريدة موجود'
+        return  response()->json(
+            [
+                'status' => [
+                    'code' => 200,
+                    'status' => true,
+                    'message' => 'هذه التغريدة موجود'
+                ],
+                'data' => $tweet
             ],
-            'data' => $tweet
-        ],
-         200);
+            200
+        );
         // return new JsonResponse($tweet);
     }
-    
+
     /**
      * Update the specified resource in storage.
      *
@@ -132,12 +141,12 @@ class TweetsController extends Controller
     {
         $tweet = Tweet::findOrFail($id);
         $request->validate([
-            'body' => 'sometimes|required|unique:tweets,body,'.$id,
+            'body' => 'sometimes|required|unique:tweets,body,' . $id,
             // 'user_id' => 'nullable|exists:users,id',
             'image' => 'nullable'
         ]);
         if ($request->hasFile('image')) {
-            if($tweet->image_url !== null ){
+            if ($tweet->image_url !== null) {
 
                 unlink(public_path('uploads/' . $tweet->image_url));
             }
@@ -163,8 +172,18 @@ class TweetsController extends Controller
     {
         $tweet = Tweet::findOrFail($id);
         $tweet->delete();
-        return new JsonResponse([
-            'message' => 'تم حذف التويتة'
-        ]);
+        return  response()->json(
+            [
+                'status' => [
+                    'code' => 200,
+                    'status' => true,
+                    'message' => 'تم حدف التغريدة'
+                ],
+                'data' => [
+                    'data' => $tweet
+                ]
+            ],
+            200
+        );
     }
 }

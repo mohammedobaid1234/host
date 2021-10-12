@@ -13,20 +13,22 @@ class NewspapersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return  response()->json([
-            'status' => [
-                'code' => 200,
-                'status' => true,
-                'message' => ' الجرائد الالكترونية'
+        return  response()->json(
+            [
+                'status' => [
+                    'code' => 200,
+                    'status' => true,
+                    'message' => ' الجرائد الالكترونية'
+                ],
+                'data' => Newspaper::paginate($request->page_size)
             ],
-            'data' => Newspaper::paginate(3)
-        ],
-         200); 
+            200
+        );
         // return Newspaper::paginate(3);
 
-        
+
     }
 
     /**
@@ -48,42 +50,48 @@ class NewspapersController extends Controller
      */
     public function show($id)
     {
-        $news =  Newspaper::where('id',$id)->first(['id','title', 'newspaper_url']); 
-        if(!$news){
-            return  response()->json([
-                'status' => [
-                    'code' => 404,
-                    'status' => false,
-                    'message' => 'هذا الجريدة غير موجود'
+        $news =  Newspaper::where('id', $id)->first(['id', 'title', 'newspaper_url']);
+        if (!$news) {
+            return  response()->json(
+                [
+                    'status' => [
+                        'code' => 404,
+                        'status' => false,
+                        'message' => 'هذا الجريدة غير موجود'
+                    ],
+                    'data' => null
                 ],
-                'data' => null
+                404
+            );
+        }
+        return  response()->json(
+            [
+                'status' => [
+                    'code' => 200,
+                    'status' => true,
+                    'message' => 'هذه الجريدة موجود'
+                ],
+                'data' => $news
             ],
-             404);
-        }  
-        return  response()->json([
-            'status' => [
-                'code' => 200,
-                'status' => true,
-                'message' => 'هذه الجريدة موجود'
-            ],
-            'data' => $news
-        ],
-         200);
+            200
+        );
         // return $news;
-        
+
     }
 
     public function newspaperToday()
     {
-        return  response()->json([
-            'status' => [
-                'code' => 200,
-                'status' => true,
-                'message' => ' جريدة اليوم'
+        return  response()->json(
+            [
+                'status' => [
+                    'code' => 200,
+                    'status' => true,
+                    'message' => ' جريدة اليوم'
+                ],
+                'data' => Newspaper::latest()->first()
             ],
-            'data' => Newspaper::latest()->first()
-        ],
-         404); 
+            404
+        );
         // return Newspaper::latest()->first();
     }
 
