@@ -47,7 +47,12 @@ class User extends Authenticatable
         'image_url',
         'created_at',
         'updated_at',
+<<<<<<< HEAD
 
+=======
+        'code'
+        
+>>>>>>> 91c51720c0330e57de3fe710d06538cffd0408ca
     ];
 
     /**
@@ -133,4 +138,9 @@ class User extends Authenticatable
         }
         return 'أدمن';
     }
+<<<<<<< HEAD
 }
+=======
+    
+}
+>>>>>>> 91c51720c0330e57de3fe710d06538cffd0408ca

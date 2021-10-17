@@ -24,8 +24,14 @@ class NewspapersController extends Controller
                 ],
                 'data' => Newspaper::paginate($request->page_size)
             ],
+<<<<<<< HEAD
             200
         );
+=======
+            'data' => Newspaper::paginate($request->page_size)
+        ],
+         200); 
+>>>>>>> 91c51720c0330e57de3fe710d06538cffd0408ca
         // return Newspaper::paginate(3);
 
 

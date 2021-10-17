@@ -22,6 +22,7 @@ class UsersController extends Controller
     public function index()
     {
         $users = User::with('council')->orderBy('created_at','asc')->paginate(10);
+        // return $users;
         return view('admin.users.index', [
             'users' => $users,
             'title' => 'كل الاعضاء'

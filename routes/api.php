@@ -33,8 +33,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::post('auth/check', [AccessTokenController::class, 'checkUser']);
+<<<<<<< HEAD
 Route::post('auth/code', [AccessTokenController::class, 'receiveCode']);
 Route::post('auth/tokens', [AccessTokenController::class, 'store']);
+=======
+Route::post('auth/code/send',[AccessTokenController::class , 'receiveCode']);
+Route::post('auth/code/check',[AccessTokenController::class , 'checkCode']);
+Route::post('auth/tokens', [AccessTokenController::class , 'store']);
+>>>>>>> 91c51720c0330e57de3fe710d06538cffd0408ca
 Route::delete('auth/tokens', [AccessTokenController::class, 'destroy'])
     ->middleware('auth:sanctum');
 
@@ -53,6 +59,7 @@ Route::apiResource('articles', ArticlesController::class);
 Route::get('today-video', [VideosController::class, 'videoToday']);
 Route::apiResource('videos', VideosController::class);
 
+<<<<<<< HEAD
 Route::get('today-newspaper', [NewspapersController::class, 'newspaperToday']);
 Route::apiResource('newspapers', NewspapersController::class);
 
@@ -65,3 +72,10 @@ Route::get('notifications', [NotificationsController::class, 'index']);
 Route::delete('notifications/{id}', [NotificationsController::class, 'delete']);
 
 Route::get('main', [ReportsController::class, 'main']);
+=======
+Route::get('notifications/{id}', [NotificationsController::class, 'index']);
+
+Route::get('about', [aboutAppContoller::class , 'index']);
+Route::get('main', [CouncilsController::class , 'index']);
+
+>>>>>>> 91c51720c0330e57de3fe710d06538cffd0408ca

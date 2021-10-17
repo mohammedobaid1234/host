@@ -24,6 +24,7 @@ class TweetsController extends Controller
     public function index(Request $request)
     {
         // dd( $request->header('User-Agent'));
+<<<<<<< HEAD
         $tweets = Tweet::with('user:id,name,type,council_id', 'tweetComments.user:id,name,council_id')->paginate($request->page_size);
         return  response()->json(
             [
@@ -36,6 +37,18 @@ class TweetsController extends Controller
             ],
             200
         );
+=======
+        $tweets = Tweet::with('user:id,name,type,council_id','tweetComments.user:id,name')->paginate($request->page_size);
+        return  response()->json([
+            'status' => [
+                'code' => 200,
+                'status' => true,
+                'message' => ' التغريدات'
+            ],
+            'data' => $tweets
+        ],
+         200); 
+>>>>>>> 91c51720c0330e57de3fe710d06538cffd0408ca
         // return new JsonResponse($tweets);
     }
     // PostmanRuntime/7.28.4
@@ -49,6 +62,7 @@ class TweetsController extends Controller
     public function store(Request $request)
     {
         $user = User::where('id', $request->post('user_id'))->firstOrFail();
+<<<<<<< HEAD
         if ($user->type == 'عضو فعال') {
             return  response()->json(
                 [
@@ -58,6 +72,14 @@ class TweetsController extends Controller
                         'message' => 'هذه العملية غير مسموحة'
                     ],
                     'data' => null
+=======
+        if($user->type == 1) {
+            return  response()->json([
+                'status' => [
+                    'code' => 403,
+                    'status' => false,
+                    'message' => 'هذه العملية غير مسموحة'
+>>>>>>> 91c51720c0330e57de3fe710d06538cffd0408ca
                 ],
                 403
             );
@@ -102,6 +124,7 @@ class TweetsController extends Controller
      */
     public function show($id)
     {
+<<<<<<< HEAD
         $tweet = Tweet::with(['user:id,name', 'tweetComments.user:id,name'])->find($id);
         if (!$tweet) {
             return  response()->json(
@@ -112,6 +135,15 @@ class TweetsController extends Controller
                         'message' => 'هذا التغريدة غير موجود'
                     ],
                     'data' => null
+=======
+        $tweet = Tweet::with(['user:id,name,council_id','tweetComments.user:id,name,council_id'])->find($id);
+        if(!$tweet){
+            return  response()->json([
+                'status' => [
+                    'code' => 404,
+                    'status' => false,
+                    'message' => 'هذا التغريدة غير موجود'
+>>>>>>> 91c51720c0330e57de3fe710d06538cffd0408ca
                 ],
                 404
             );

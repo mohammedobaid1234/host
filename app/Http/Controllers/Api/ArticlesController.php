@@ -15,6 +15,20 @@ class ArticlesController extends Controller
      */
     public function index(Request $request)
     {
+<<<<<<< HEAD
+=======
+        
+        return  response()->json([
+            'status' => [
+                'code' => 200,
+                'status' => true,
+                'message' => ' مقالات'
+            ],
+            'data' => Article::paginate($request->page_size)
+        ],
+         200); 
+        
+>>>>>>> 91c51720c0330e57de3fe710d06538cffd0408ca
 
         return  response()->json(
             [

@@ -24,8 +24,14 @@ class VideosController extends Controller
                 ],
                 'data' => Video::paginate($request->page_size)
             ],
+<<<<<<< HEAD
             200
         );
+=======
+            'data' => Video::paginate($request->page_size)
+        ],
+         200);
+>>>>>>> 91c51720c0330e57de3fe710d06538cffd0408ca
         // return Video::paginate(3);
 
 

@@ -26,8 +26,14 @@ class ReportsController extends Controller
                 ],
                 'data' => Report::select(['id', 'title', 'body'])->paginate($request->page_size)
             ],
+<<<<<<< HEAD
             200
         );
+=======
+            'data' => Report::select(['id','title','body'])->paginate($request->page_size)
+        ],
+         200); 
+>>>>>>> 91c51720c0330e57de3fe710d06538cffd0408ca
         // return Report::select(['title','body'])->paginate(3);
     }
 
@@ -50,6 +56,7 @@ class ReportsController extends Controller
      */
     public function show($id)
     {
+<<<<<<< HEAD
         $report =  Report::where('id', $id)->first(['id', 'title', 'body']);
         if (!$report) {
             return  response()->json(
@@ -60,6 +67,15 @@ class ReportsController extends Controller
                         'message' => 'هذا الخبر غير موجود'
                     ],
                     'data' => null
+=======
+        $report =  Report::where('id',$id)->first(['id','title','body']);
+        if(!$report){
+            return  response()->json([
+                'status' => [
+                    'code' => 404,
+                    'status' => false,
+                    'message' => 'هذا الخبر غير موجود'
+>>>>>>> 91c51720c0330e57de3fe710d06538cffd0408ca
                 ],
                 404
             );
@@ -96,7 +112,7 @@ class ReportsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        
     }
 
     public function main()
