@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Ads extends Model
 {
     use HasFactory;
+<<<<<<< HEAD
 
     protected $fillable = ['image_url', 'type'];
 
@@ -35,3 +36,7 @@ class Ads extends Model
         return asset('uploads/' . $this->image_url);
     }
 }
+=======
+    protected $fillable = ['image_url', 'type'];
+}
+>>>>>>> b7164c23a9cab9ac550824a411353744083e397a

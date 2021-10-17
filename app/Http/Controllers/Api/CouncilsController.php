@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Ad;
+use App\Models\Ads;
 use App\Models\Council;
+use App\Models\Report;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -36,6 +39,21 @@ class CouncilsController extends Controller
     public function store(Request $request)
     {
         
+    }
+    public function main()
+    {
+        return  response()->json([
+            'status' => [
+                'code' => 200,
+                'status' => true,
+                'message' => 'الصفحة الرئيسية'
+            ],
+            'data' => [
+                'main' => Report::get(),
+                'ads' => Ads::get(),
+            ]
+        ],
+         200);
     }
 
     /**
