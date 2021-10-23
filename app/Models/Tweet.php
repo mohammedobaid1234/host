@@ -22,11 +22,13 @@ class Tweet extends Model
         'likes',
         'user_id',
     ];
-    protected $appends =['image_path'];
+    protected $appends =['image_path','time'];
     protected $hidden = ['image_url'];
     protected static function booted()
     {
         static::creating(function(Tweet $tweet) {
+            
+
             $slug = Str::slug($tweet->body);
 
             $count = Tweet::where('slug', 'LIKE', "{$slug}%")->count();
@@ -72,6 +74,10 @@ class Tweet extends Model
             return $this->image_url;
         }
         return asset('uploads/' . $this->image_url);
+    }
+    public function getTimeAttribute($value)
+    {
+        return $this->created_at->diffForHumans();
     }
    
 }

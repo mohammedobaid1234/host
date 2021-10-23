@@ -211,17 +211,17 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 {{'active'}}
               @endif">
                   <i class="fas fa-file-pdf"></i>
-                  <p>قسم الجرائد الالكترونية</p>
+                  <p>قسم الجرائد الالكترونية</p>يب ال
                 </a>
               </li>
-              <li class="nav-item">
+              {{-- <li class="nav-item">
                 <a href="{{route('ads.index')}}" class="nav-link @if (Route::is('ads.*'))
                 {{'active'}}
               @endif">
                   <i class="fas fa-file-pdf"></i>
                   <p>قسم الاعلانات</p>
                 </a>
-              </li>
+              </li> --}}
             </ul>
           </li>
           <li class="nav-item">
