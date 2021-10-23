@@ -20,7 +20,7 @@
             <tbody>
                 @foreach ($sections as $section)       
                     <tr>
-                    <th scope="row">{{$loop->first? 'الأول' : ($loop->last? 'الأخير' : $loop->iteration)}}</th>
+                    <th scope="row">{{ $loop->iteration }}</th>
                     <td><a href="{{route('council.checkChildren', $section->id)}}">{{$section->name}}</a></td>
                     <td>{{$section->created_at}}</td>
                     <td class="option">

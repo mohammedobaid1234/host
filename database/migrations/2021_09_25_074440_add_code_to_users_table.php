@@ -14,7 +14,7 @@ class AddCodeToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('code', 6)->nullable()->before('created_at');
+            // $table->string('code', 6)->nullable()->before('created_at');
          
         });
     }

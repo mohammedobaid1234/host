@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use Illuminate\Pagination\Paginator;
 use Illuminate\Routing\UrlGenerator;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\ServiceProvider;
+use League\CommonMark\Environment;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,7 +17,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
     }
 
     /**
@@ -23,13 +24,14 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot(UrlGenerator $url)
+    public function boot()
     {
         Paginator::useBootstrap();
-        If(env('APP_ENV') !== 'local') { $url->forceSchema('https'); }
-        // if(config('app.env') === 'production') {
+        // if (env('APP_ENV') !== 'local') {
+        //     $url->forceSchema('https');
+        // }
+        // if (config('app.env') === 'production') {
         //     \URL::forceScheme('https');
         // }
-        
     }
 }

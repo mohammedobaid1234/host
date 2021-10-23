@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\VideosController;
 use App\Http\Controllers\Api\CommentsController;
 use App\Http\Controllers\Api\LikesController;
 use App\Http\Controllers\Api\NotificationsController;
+use App\Http\Controllers\Api\ShareController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -58,8 +59,13 @@ Route::apiResource('favorites',FavoritesController::class);
 Route::apiResource('comments',CommentsController::class);
 Route::apiResource('likes',LikesController::class);
 
-Route::get('notifications/{id}', [NotificationsController::class, 'index']);
+Route::get('notifications', [NotificationsController::class, 'index']);
+Route::delete('notifications/{id}', [NotificationsController::class, 'delete']);
 
 Route::get('about', [aboutAppContoller::class , 'index']);
-Route::get('main', [CouncilsController::class , 'index']);
+
+Route::get('main', [CouncilsController::class , 'main']);
+
+Route::apiResource('share',ShareController::class);
+
 

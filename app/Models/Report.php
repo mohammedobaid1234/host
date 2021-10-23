@@ -31,9 +31,8 @@ class Report extends Model
      */
     public function getImagePathAttribute($value)
     {
-      
         if(!$this->image_url){
-            // return asset('images/placeholder.png');
+            return asset('uploads/palceholder.jpg');
         }
         if(stripos($this->image_url , 'http') ===  0){
             return $this->image_url;
@@ -53,6 +52,10 @@ class Report extends Model
             $report->slug = $slug;
         });
     } 
+    public function share()
+    {
+        $this->belongsToMany(Share::class,'shares','share_id','user');
+    }
 
 
 }

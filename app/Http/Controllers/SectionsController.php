@@ -79,35 +79,27 @@ class SectionsController extends Controller
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+   public function update(Request $request, $id)
+   {
+       $section = Council::findOrFail($id);
+       $section->update($request->all());
+       return redirect()->back()->with(['success' => 'تم تعديل القسم بنجاح']);
+   }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $section = Council::findOrFail($id);
-        $type = $section->load('parent');
-        $type = $type->parent->type ;
-        return view('admin.sections.edit',[
-            'section' => $section ,
-            'title' => " تعديل القسم",
-            'type' => "ال".$type   
-        ]);
-    }
+ 
+   public function destroy($id)
+   {
+       // dd('dd');
+       $section = Council::where('id', $id)->first();
+       $section->delete();
+       return  redirect()->route('councils.index')->with(['success' => 'تم حذف القسم بنجاح']);
+   }
+  
 
+<<<<<<< HEAD
+  
+
+=======
     /**
      * Update the specified resource in storage.
      *
@@ -135,4 +127,5 @@ class SectionsController extends Controller
         $section->delete();
         return  redirect()->route('councils.index')->with(['success' => 'تم حذف القسم بنجاح']);
     }
+>>>>>>> 91c51720c0330e57de3fe710d06538cffd0408ca
 }

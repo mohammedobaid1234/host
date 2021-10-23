@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Str;
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -58,7 +59,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    protected $appends =['image_path','council_name'];
+    protected $appends = ['image_path', 'council_name'];
 
     /**
      * The reflations.
@@ -85,13 +86,20 @@ class User extends Authenticatable
     {
         return $this->hasMany(Favorite::class);
     }
+    
+    public function shares()
+    {
+      return $this->hasMany(Share::class);
+    }
+
     public function reports()
     {
-        return $this->belongsToMany(Report::class,'favorites');
+        
+        return $this->belongsToMany(Report::class, 'favorites');
     }
     protected static function booted()
     {
-        static::creating(function(User $user) {
+        static::creating(function (User $user) {
             $slug = Str::slug($user->name);
 
             $count = User::where('slug', 'LIKE', "{$slug}%")->count();
@@ -100,23 +108,23 @@ class User extends Authenticatable
             }
             $user->slug = $slug;
         });
-    } 
+    }
     public function getImagePathAttribute($value)
     {
-        if(!$this->image_url){
+        if (!$this->image_url) {
             return asset('uploads/palceholder.jpg');
         }
-        if(stripos($this->image_url , 'http') ===  0){
+        if (stripos($this->image_url, 'http') ===  0) {
             return $this->image_url;
         }
         return asset('uploads/' . $this->image_url);
     }
     public function getCouncilNameAttribute($id)
     {
-        if($this->type == 2){
-            if($this->council->parent == null){
+        if ($this->type == 2) {
+            if ($this->council->parent == null) {
                 return $this->council->name;
-            }else{
+            } else {
                 return $this->council->parent->name;
             }
         }
@@ -125,9 +133,10 @@ class User extends Authenticatable
     public function getUserTypeAttribute()
     {
         $type = $this->type;
-        if($type == 1){
+        if ($type == 1) {
             return 'عضو فعال';
-        }if($type == 2){
+        }
+        if ($type == 2) {
             return 'عضو مجلس';
         }
         return 'أدمن';

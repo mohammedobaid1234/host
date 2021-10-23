@@ -49,8 +49,10 @@ class ReportsController extends Controller
             'image' => ['required', 'image'],
         ]);
         if($request->hasFile('image')){
-            $uploadedFile = $request->file('image');
-            $image_url = $uploadedFile->store('/','upload');
+            $file = $request->file('image');
+            $image_url = $file->store('/', [
+                'disk' => 'upload',
+            ]);
             $request->merge([
                 'image_url' => $image_url
             ]);

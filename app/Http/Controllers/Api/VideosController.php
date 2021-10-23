@@ -15,18 +15,26 @@ class VideosController extends Controller
      */
     public function index(Request $request)
     {
-        return  response()->json([
-            'status' => [
-                'code' => 200,
-                'status' => true,
-                'message' => ' مقاطع الفيديو'
+        return  response()->json(
+            [
+                'status' => [
+                    'code' => 200,
+                    'status' => true,
+                    'message' => ' مقاطع الفيديو'
+                ],
+                'data' => Video::paginate($request->page_size)
             ],
+<<<<<<< HEAD
+            200
+        );
+=======
             'data' => Video::paginate($request->page_size)
         ],
          200);
+>>>>>>> 91c51720c0330e57de3fe710d06538cffd0408ca
         // return Video::paginate(3);
 
-        
+
     }
 
     /**
@@ -48,42 +56,48 @@ class VideosController extends Controller
      */
     public function show($id)
     {
-        $video = Video::where('id',$id)->first(['id','title', 'video_url', 'image_url',]);
-        if(!$video){
-            return  response()->json([
-                'status' => [
-                    'code' => 404,
-                    'status' => false,
-                    'message' => 'هذا الفيديو غير موجود'
+        $video = Video::where('id', $id)->first(['id', 'title', 'video_url', 'image_url',]);
+        if (!$video) {
+            return  response()->json(
+                [
+                    'status' => [
+                        'code' => 404,
+                        'status' => false,
+                        'message' => 'هذا الفيديو غير موجود'
+                    ],
+                    'data' => null
                 ],
-                'data' => null
-            ],
-             404); 
+                404
+            );
         }
-        return  response()->json([
-            'status' => [
-                'code' => 200,
-                'status' => true,
-                'message' => 'هذا الفيديو موجود'
+        return  response()->json(
+            [
+                'status' => [
+                    'code' => 200,
+                    'status' => true,
+                    'message' => 'هذا الفيديو موجود'
+                ],
+                'data' => $video
             ],
-            'data' => $video
-        ],
-         200);
+            200
+        );
         // return $video;
-        
+
     }
 
     public function videoToday()
     {
-        return  response()->json([
-            'status' => [
-                'code' => 200,
-                'status' => true,
-                'message' => ' مقطع اليوم'
+        return  response()->json(
+            [
+                'status' => [
+                    'code' => 200,
+                    'status' => true,
+                    'message' => ' مقطع اليوم'
+                ],
+                'data' => Video::latest()->first()
             ],
-            'data' => Video::latest()->first()
-        ],
-         200); 
+            200
+        );
         // return Video::latest()->first();
     }
     /**

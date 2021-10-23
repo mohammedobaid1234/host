@@ -3,7 +3,7 @@
         <div class="container-fluid ">
             <div class="row" style="padding-top: 20px">
               <div class="col-lg-6">
-                <div class="card">
+                <div class="card card-primary card-outline">
                   <div class="card-header">
                     <h5 class="m-0">قسم الاخبار</h5>
                   </div>
@@ -26,7 +26,19 @@
                     <a href="{{route('articles.index')}}" class="btn btn-primary">عرض المقالات</a>
                   </div>
                 </div>
-                <div class="card">
+                <div class="card card-primary card-outline">
+                  <div class="card-header">
+                    <h5 class="m-0">قسم الاعلانات</h5>
+                  </div>
+                  <div class="card-body">
+                    {{-- <h6 class="card-title">Special title treatment</h6> --}}
+    
+                    <p class="card-text">هنا يتم عرض واضافة الاعلانات</p>
+                    <a href="{{route('ads.index')}}" class="btn btn-primary">عرض سجل الاعلانات</a>
+                    
+                  </div>
+                </div>
+                <div class="card card-primary card-outline">
                   <div class="card-header">
                     <h5 class="m-0">قسم المجالس</h5>
                   </div>
@@ -39,9 +51,10 @@
                   </div>
                 </div>
               </div>
+              
               <!-- /.col-md-6 -->
               <div class="col-lg-6">
-                <div class="card">
+                <div class="card card-primary card-outline">
                   <div class="card-header">
                     <h5 class="m-0"> قسم الاعضاء</h5>
                   </div>
@@ -64,7 +77,7 @@
                     <a href="{{route('videos.index')}}" class="btn btn-primary">عرض مقاطع الفيديو</a>
                   </div>
                 </div>
-                <div class="card">
+                <div class="card card-primary card-outline">
                   <div class="card-header">
                     <h5 class="m-0">قسم الجرائد الالكترونية</h5>
                   </div>
@@ -76,6 +89,8 @@
                     
                   </div>
                 </div>
+                
+                
               </div>
               <!-- /.col-md-6 -->
             </div>

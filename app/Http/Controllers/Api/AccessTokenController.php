@@ -19,20 +19,24 @@ class AccessTokenController extends Controller
         $request->validate([
             'phone_number' => 'required'
         ]);
+        
         $phone = trim($request->phone_number);
         $user = User::where('phone_number', $phone)->first();
-        if(!$user){
-            return  response()->json([
-                'status' => [
-                    'code' => 404,
-                    'status' => false,
-                    'message' => 'هذا العنصر غير موجود'
+        if (!$user) {
+            return  response()->json(
+                [
+                    'status' => [
+                        'code' => 404,
+                        'status' => false,
+                        'message' => 'هذا العنصر غير موجود'
+                    ],
+                    'data' => null
                 ],
-                'data' => null
-            ],
-             404); 
+                404
+            );
         }
-        return  response()->json([
+        return  response()->json(
+            [
                 'status' => [
                     'code' => 200,
                     'status' => true,
@@ -40,11 +44,10 @@ class AccessTokenController extends Controller
                 ],
                 'data' => $user
             ],
-             200); 
+            200
+        );
         // return $user;
     }
-
-    
 
     public function receiveCode(Request $request)
     {
@@ -52,100 +55,56 @@ class AccessTokenController extends Controller
             'code' => 'required',
             'phone_number' => 'required'
         ]);
-        
         $phone = trim($request->phone_number);
-        
+
         $user = User::where('phone_number', $phone)->first();
-        
-        
         $user->update([
             'code' => $request->code
         ]);
-        return  response()->json([
-            'status' => [
-                'code' => 200,
-                'status' => true,
-                'message' => "تم ارسال الرمز"
-            ],
-            'data' => $user,
-            
-        ], 200);
+        return;
     }
-
-    public function checkCode(Request $request)
-    {
-        $request->validate([
-            'phone_number' => ['required'],
-            'code' => ['required']
-        ]);
-
-        $phone = trim($request->phone_number);
-        
-        $user = User::where('phone_number', $phone)
-        ->first();
-        if(!$user || $user->code !== $request->code){
-            return  response()->json([
-                'status' => [
-                    'code' => 404,
-                    'status' => false,
-                    'message' => 'رمز التحقق غير صحيح'
-                ],
-                'data' => null
-            ],
-             404); 
-        }
-        $user->update([
-            'code' => null
-        ]);
-            return  response()->json([
-                'status' => [
-                    'code' => 200,
-                    'status' => true,
-                    'message' => "تم التحقق "
-                ],
-                'data' =>  $user
-            ], 200);
-
-    }
-
     public function store(Request $request)
     {
         $request->validate([
             'phone_number' => ['required'],
             'device_name' => ['required'],
-          
+            // 'code' => ['required']
         ]);
         $phone = trim($request->phone_number);
-        
+
         $user = User::where('phone_number', $phone)
-        ->first();
+            ->first();
 
         // $this->ensureIsNotRateLimited($request);
-        if(!$user){
+        if (!$user || $user->code !== $request->code) {
             // RateLimiter::hit($this->throttleKey());
-            return  response()->json([
-                'status' => [
-                    'code' => 404,
-                    'status' => false,
-                    'message' => 'هذا الرقم غير موجود'
+            return  response()->json(
+                [
+                    'status' => [
+                        'code' => 404,
+                        'status' => false,
+                        'message' => 'رمز التحقق غير صحيح'
+                    ],
+                    'data' => null
                 ],
-                'data' => null
-            ],
-             404); 
+                404
+            );
         }
         $token = $user->createToken($request->device_name);
-        
-            return  response()->json([
-                'status' => [
-                    'code' => 200,
-                    'status' => true,
-                    'message' => "تم تسجيل الدخول"
-                ],
-                'data' =>[
-                    'token' => $token->plainTextToken,
-                    'user' =>  $user,
-                ]
-            ], 200);
+        $user->update([
+            'code' => null
+        ]);
+        return  response()->json([
+            'status' => [
+                'code' => 200,
+                'status' => true,
+                'message' => "تم تسجيل الدخول"
+            ],
+            'data' => [
+                'token' => $token->plainTextToken,
+                'user' =>  $user,
+            ]
+        ], 200);
     }
     public function destroy()
     {
@@ -159,12 +118,11 @@ class AccessTokenController extends Controller
         return response()->json([
             'status' => [
                 'code' => 204,
-                'status' => true,          
+                'status' => true,
                 'message' => 'تم تسجيل الخروج'
             ],
             'data' => null
         ], 204);
-        
     }
     // /**
     //  * Ensure the login request is not rate limited.

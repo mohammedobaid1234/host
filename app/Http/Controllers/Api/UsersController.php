@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Share;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -55,6 +56,7 @@ class UsersController extends Controller
             ],
              404);
         }
+        // $report = Share::where('user_id', $$user->id)->first();
         $user =  $user->load('tweets');
         return  response()->json([
             'status' => [
@@ -62,7 +64,8 @@ class UsersController extends Controller
                 'status' => true,
                 'message' => 'عرض بيانات المستخدم'
             ],
-            'data' => $user
+            'data' => $user,
+            'shares' => $user->reports
         ],
          200); 
 

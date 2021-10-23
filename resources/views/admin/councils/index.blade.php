@@ -1,5 +1,9 @@
 <x-main-layout title="كل المجالس">
-    <x-form-new-button label='اضافة قسم تابع لمجلس' action='sections.before' />
+    <div class="top-button" style="display:flex">
+
+        <x-form-new-button label='اضافة قسم تابع لمجلس' action='sections.before' />
+        <x-form-new-button label='اضافة مجلس رئيسي' action='councils.create' />
+    </div>
     
 
     @if(Session::has('success'))
@@ -23,7 +27,7 @@
             <tbody>
                 @foreach($councils as $council)
                 <tr>
-                    <th scope="row">{{$loop->first? 'الأول' : ($loop->last? 'الأخير' : $loop->iteration)}}</th>
+                    <th scope="row">{{ $loop->iteration }}</th>
 
                     <th scope="row"><a href="{{route('council.checkChildren', $council->id)}}">{{ $council->name }}</a></th>
                     {{-- @if ($council->id == 5)
