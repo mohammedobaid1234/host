@@ -61,7 +61,54 @@ class AccessTokenController extends Controller
         $user->update([
             'code' => $request->code
         ]);
-        return;
+        return  response()->json(
+            [
+                'status' => [
+                    'code' => 201,
+                    'status' => true,
+                    'message' => 'تم ارسال رمز التحقق '
+                ],
+                'data' => $user
+            ],
+            201
+        );
+    }
+
+    public function checkCode(Request $request)
+    {
+        $request->validate([
+            'code' => 'required',
+            'phone_number' => 'required'
+        ]);
+        $phone = trim($request->phone_number);
+
+        $user = User::where('phone_number', $phone)->first();
+        if($user->code === $request->code){
+
+            return  response()->json(
+                [
+                    'status' => [
+                        'code' => 200,
+                        'status' => true,
+                        'message' => 'تم التحقق من رمز التحقق '
+                    ],
+                    'data' => $user
+                ],
+                200
+            );
+        }
+        return  response()->json(
+            [
+                'status' => [
+                    'code' => 401,
+                    'status' => true,
+                    'message' => 'رمز التحقق غير صحيح '
+                ],
+                'data' => $user
+            ],
+            401
+        );
+
     }
     public function store(Request $request)
     {
@@ -76,14 +123,14 @@ class AccessTokenController extends Controller
             ->first();
 
         // $this->ensureIsNotRateLimited($request);
-        if (!$user || $user->code !== $request->code) {
+        if (!$user) {
             // RateLimiter::hit($this->throttleKey());
             return  response()->json(
                 [
                     'status' => [
                         'code' => 404,
                         'status' => false,
-                        'message' => 'رمز التحقق غير صحيح'
+                        'message' => 'العضو غير موجود'
                     ],
                     'data' => null
                 ],
@@ -109,7 +156,7 @@ class AccessTokenController extends Controller
     public function destroy()
     {
         $user = Auth::guard('sanctum')->user();
-
+        
         // Revoke (delete) all user tokens
         //$user->tokens()->delete();
 
@@ -117,12 +164,12 @@ class AccessTokenController extends Controller
         $user->currentAccessToken()->delete();
         return response()->json([
             'status' => [
-                'code' => 204,
+                'code' => 200,
                 'status' => true,
                 'message' => 'تم تسجيل الخروج'
             ],
             'data' => null
-        ], 204);
+        ], 200);
     }
     // /**
     //  * Ensure the login request is not rate limited.

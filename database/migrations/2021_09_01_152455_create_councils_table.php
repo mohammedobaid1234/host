@@ -19,6 +19,7 @@ class CreateCouncilsTable extends Migration
             $table->string('slug')->unique();
             $table->string('type')->nullable();
             $table->foreignId('parent_id')->nullable()->constrained('councils')->cascadeOnDelete();
+            $table->enum('hasChild', [0,1]);
             $table->timestamps();
         });
     }

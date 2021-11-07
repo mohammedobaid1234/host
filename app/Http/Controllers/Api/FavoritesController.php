@@ -7,13 +7,14 @@ use App\Models\Favorite;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class FavoritesController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth:sanctum')->except(['show', 'index']);
+        $this->middleware('auth:sanctum');
     }
     /**
      * Display a listing of the resource.
@@ -33,15 +34,17 @@ class FavoritesController extends Controller
      */
     public function store(Request $request)
     {
+        $user = Auth::guard('sanctum')->id();
         $request->validate([
-            'user_id' => 'required|exists:users,id',
+            
             'report_id' => 'required|exists:reports,id',
         ]);
-        $favorite = Favorite::where('user_id', $request->user_id)
+        $favorite = Favorite::where('user_id', $user)
         ->where('report_id', $request->report_id)
         ->first();
+
         if ($favorite) {
-            DB::table('favorites')->where('user_id', $request->user_id)
+            DB::table('favorites')->where('user_id', $user)
                 ->where('report_id', $request->report_id)->delete();
 
             $favorite->update([
@@ -49,14 +52,17 @@ class FavoritesController extends Controller
             ]);
             return  response()->json([
                 'status' => [
-                    'code' => 204,
+                    'code' => 201,
                     'status' => false,
                     'message' => 'تم ازالةالعنصر المفضلة'
                 ],
                 'data' => null
             ],
-             204); 
+             201); 
         }else{
+            $request->merge([
+                'user_id' => $user
+            ]);
 
             $favorite_report = Favorite::create($request->all());
             return  response()->json([
@@ -78,9 +84,11 @@ class FavoritesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function favorites()
     {
-        $user = User::find($id);
+        $user = Auth::guard('sanctum')->user();
+     
+        
         if(!$user){
             return  response()->json([
                 'status' => [
@@ -92,7 +100,8 @@ class FavoritesController extends Controller
             ],
              404);
         }
-        $favorite_report = $user->load('favorites');
+
+        $favorite_report = $user;
 
         return  response()->json([
             'status' => [

@@ -13,10 +13,11 @@ class AddCodeToUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            // $table->string('code', 6)->nullable()->before('created_at');
-         
-        });
+       Schema::table('users', function (Blueprint $table) {
+        $table->string('code', 6)->nullable()->before('created_at');
+        // add_code_to_users_table
+     
+    });
     }
 
     /**
@@ -27,7 +28,7 @@ class AddCodeToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            
+            //
         });
     }
 }

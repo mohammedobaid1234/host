@@ -24,6 +24,7 @@ class Tweet extends Model
     ];
     protected $appends =['image_path','time'];
     protected $hidden = ['image_url'];
+    public $with = ['tweetComments'];
     protected static function booted()
     {
         static::creating(function(Tweet $tweet) {

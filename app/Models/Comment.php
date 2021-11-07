@@ -21,6 +21,7 @@ class Comment extends Model
         'user_id',
         'tweet_id'
     ];
+    protected $appends =['time'];
 
     public function user()
     {
@@ -38,5 +39,9 @@ class Comment extends Model
             }
             $comment->slug = $slug;
         });
+    }
+    public function getTimeAttribute($value)
+    {
+        return $this->created_at->diffForHumans();
     }
 }

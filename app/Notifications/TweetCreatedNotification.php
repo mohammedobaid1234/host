@@ -58,7 +58,8 @@ class TweetCreatedNotification extends Notification
         return [
             'title' => 'غرد' . $this->user->name . ' ' . 'حديثا',
             'url' => config('app.url') . "/api/tweets/" . $this->tweet->id,
-            'icon' =>$this->user->image_path
+            'icon' =>$this->user->image_path,
+            'created_at' => date('Y-m-d H:i:s.uZ')
         ];
     }
 

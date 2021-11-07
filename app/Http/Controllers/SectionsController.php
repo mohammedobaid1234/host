@@ -58,8 +58,7 @@ class SectionsController extends Controller
     public function beforeCreate()
     {   
         $councils = Council::whereNull('parent_id')
-        ->where('name','<>','المجلس البلدي')
-        ->Where('name','<>','مجالس النوادي') 
+        // ->where('hasChild','!==', '0')
         ->pluck('name','id');
         return view('admin.sections.before-create',[
             'councils' => $councils,
@@ -96,36 +95,6 @@ class SectionsController extends Controller
    }
   
 
-<<<<<<< HEAD
   
 
-=======
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $section = Council::findOrFail($id);
-        $section->update($request->all());
-        return redirect()->back()->with(['success' => 'تم تعديل القسم بنجاح']);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        // dd('dd');
-        $section = Council::where('id', $id)->first();
-        $section->delete();
-        return  redirect()->route('councils.index')->with(['success' => 'تم حذف القسم بنجاح']);
-    }
->>>>>>> 91c51720c0330e57de3fe710d06538cffd0408ca
 }

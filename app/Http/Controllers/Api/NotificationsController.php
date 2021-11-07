@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Ramsey\Uuid\Converter\Number\GenericNumberConverter;
+use Ramsey\Uuid\Math\BrickMathCalculator;
 
 class NotificationsController extends Controller
 {
@@ -14,7 +16,6 @@ class NotificationsController extends Controller
     {
         $this->middleware('auth:sanctum');
     }
-<<<<<<< HEAD
     public function index()
     {
         $user = Auth::guard('sanctum')->user();
@@ -32,6 +33,8 @@ class NotificationsController extends Controller
             );
         }
         foreach ($user->unreadNotifications as $not) {
+            // $converter = new GenericNumberConverter(new BrickMathCalculator());
+            // return $converter->fromHex($not);
             $data[] = [
                 'id' => $not->id,
                 'data' => $not->data
@@ -46,16 +49,6 @@ class NotificationsController extends Controller
                     'message' => 'الاشعارات'
                 ],
                 'data' => $data
-=======
-    public function index($id) {
-        return Auth::guard('sanctum')->id();
-        $notUser = DB::table('notifications')->where('notifiable_id', $id)->get(['data']);   
-        return  response()->json([
-            'status' => [
-                'code' => 200,
-                'status' => true,
-                'message' => 'الاشعارات'
->>>>>>> 91c51720c0330e57de3fe710d06538cffd0408ca
             ],
             200
         );

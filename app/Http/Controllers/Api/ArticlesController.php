@@ -15,8 +15,6 @@ class ArticlesController extends Controller
      */
     public function index(Request $request)
     {
-<<<<<<< HEAD
-=======
         
         return  response()->json([
             'status' => [
@@ -28,7 +26,6 @@ class ArticlesController extends Controller
         ],
          200); 
         
->>>>>>> 91c51720c0330e57de3fe710d06538cffd0408ca
 
         return  response()->json(
             [

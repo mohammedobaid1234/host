@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Notifications\TweetCreatedNotification;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
 
 class TweetsController extends Controller
@@ -24,7 +25,7 @@ class TweetsController extends Controller
     public function index(Request $request)
     {
         // dd( $request->header('User-Agent'));
-
+        
         $tweets = Tweet::with('user:id,name,type,council_id', 'tweetComments.user:id,name,council_id')->paginate($request->page_size);
         return  response()->json(
             [
@@ -49,8 +50,10 @@ class TweetsController extends Controller
      */
     public function store(Request $request)
     {
-        $user = User::where('id', $request->post('user_id'))->firstOrFail();
-        if ($user->type == 'عضو فعال') {
+        // $user = User::where('id', Auth::guard('sanctum')->id())->firstOrFail();
+        $user = Auth::guard('sanctum')->user();
+        // return $user->type;
+        if ($user->type == '1') {
             return  response()->json(
                 [
                     'status' => [
@@ -66,11 +69,16 @@ class TweetsController extends Controller
             //     'message' => 'هذه العملية غير مسموحة'
             // ], 403);
         }
+        
         $request->validate([
             'body' => 'required',
-            'user_id' => 'required|exists:users,id',
+            // 'user_id' => 'required|exists:users,id',
             'image' => 'nullable'
         ]);
+        $request->merge([
+            'user_id' => Auth::guard('sanctum')->id()
+        ]);
+        
         if ($request->hasFile('image')) {
             $uploadedFile = $request->file('image');
             $image_url = $uploadedFile->store('/', 'upload');
@@ -146,6 +154,8 @@ class TweetsController extends Controller
             // 'user_id' => 'nullable|exists:users,id',
             'image' => 'nullable'
         ]);
+        $request->merge(['user_id' => Auth::guard('sanctum')->id()]);
+
         if ($request->hasFile('image')) {
             if ($tweet->image_url !== null) {
 
@@ -172,19 +182,34 @@ class TweetsController extends Controller
     public function destroy($id)
     {
         $tweet = Tweet::findOrFail($id);
-        $tweet->delete();
+        if(Auth::guard('sanctum')->id() == $tweet->user_id){
+            $tweet->delete();
+            return  response()->json(
+                [
+                    'status' => [
+                        'code' => 200,
+                        'status' => true,
+                        'message' => 'تم حدف التغريدة'
+                    ],
+                    'data' => [
+                        'data' => $tweet
+                    ]
+                ],
+                200
+            );
+        }
         return  response()->json(
             [
                 'status' => [
-                    'code' => 200,
+                    'code' => 403,
                     'status' => true,
-                    'message' => 'تم حدف التغريدة'
+                    'message' => 'لا تمتلك الصلاحية لحذف هذه التغريدة'
                 ],
                 'data' => [
-                    'data' => $tweet
+                    'data' => ""
                 ]
             ],
-            200
+            403
         );
     }
 }

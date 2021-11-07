@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Notifications\CommentCreatedNotification;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 
 class CommentsController extends Controller
@@ -22,9 +23,24 @@ class CommentsController extends Controller
     {
         $request->validate([
             'body' => 'required',
-            'user_id' => 'required|exists:users,id',
             'tweet_id' => 'required|exists:tweets,id'
         ]);
+        $request->merge(['user_id' => Auth::guard('sanctum')->id()]);
+        $user = Auth::guard('sanctum')->user();
+        // return $user;
+        if ($user->type == '1') {
+            return  response()->json(
+                [
+                    'status' => [
+                        'code' => 403,
+                        'status' => false,
+                        'message' => 'هذه العملية غير مسموحة'
+                    ],
+                    'data' => null
+                ],
+                403
+            );
+        }  
         if ($request->hasFile('image')) {
             $uploadedFile = $request->file('image');
             
@@ -33,6 +49,7 @@ class CommentsController extends Controller
                 'image_url' => $image_url
             ]);
         }
+        // return $request;
         $comment = Comment::create($request->all());
         $tweet = Tweet::where('id', $request->tweet_id)->first();
         if(!$tweet){
@@ -72,5 +89,8 @@ class CommentsController extends Controller
             'data' => $comment->load('user')
         ],
          201); 
+         
+         
     }
+    
 }

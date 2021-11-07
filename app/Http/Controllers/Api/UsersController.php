@@ -7,6 +7,7 @@ use App\Models\Share;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UsersController extends Controller
 {
@@ -57,7 +58,7 @@ class UsersController extends Controller
              404);
         }
         // $report = Share::where('user_id', $$user->id)->first();
-        $user =  $user->load('tweets');
+        // $user =  $user->load('tweets');
         return  response()->json([
             'status' => [
                 'code' => 200,
@@ -65,6 +66,7 @@ class UsersController extends Controller
                 'message' => 'عرض بيانات المستخدم'
             ],
             'data' => $user,
+            'tweets' => $user->tweets,
             'shares' => $user->reports
         ],
          200); 
@@ -81,7 +83,7 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = User::findOrFail($id);
+        $user = Auth::guard('sanctum')->user();
         if(!$user) {
             return  response()->json([
                 'status' => [

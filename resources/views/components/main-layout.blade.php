@@ -122,10 +122,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex" style="display: flex; flex-direction:column; align-items:center">
         <div class="image">
-          <img  style="width:5.1rem; border-radius:45%" src="{{ Auth::user()->image_path }}" class="" alt="User Image">
+          {{-- <img  style="width:5.1rem; border-radius:45%" src="{{ Auth::user()->image_path }}" class="" alt="User Image"> --}}
         </div>
         <div class="info">
-          <a href="" class="d-block">{{ Auth::user()->name }}</a>
+          {{-- <a href="" class="d-block">{{ Auth::user()->name }}</a> --}}
         </div>
       </div>
 

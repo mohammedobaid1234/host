@@ -90,15 +90,18 @@ class CouncilsController extends Controller
         ],
          200);
         }
+        
         $council = $parent_council->load('children.users');
         $users = collect([]);
         $users1 = $council->users;
         foreach($users1 as $child){
             $id = $child->id;
             $name = $child->name;
+            $image_path = $child->image_path;
             $array = [
                 'id' => $id,
-                'name' => $name
+                'name' => $name,
+                'image_url' => $image_path
             ];
            
             $users->push($array);  

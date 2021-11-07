@@ -58,7 +58,8 @@ class CommentCreatedNotification extends Notification
         return [
             'title' => 'علق ' . $this->user->name . ' ' . 'على تغريدتك',
             'url' => config('app.url') . "/api/tweets/" . $this->comment->id,
-            'icon' =>$this->user->image_path
+            'icon' =>$this->user->image_path,
+            'created_at' => date('Y-m-d H:i:s.uZ')
         ];
     }
     /**
