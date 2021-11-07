@@ -19,7 +19,7 @@ class ChMessages extends Model
         'seen'
     ];
     
-    public function users_to()
+    public function to_user()
     {
         return $this->belongsTo(User::class, 'to_id');
     }
@@ -27,25 +27,38 @@ class ChMessages extends Model
     {
         return $this->belongsTo(User::class, 'id');
     }
-    public function users_from()
+    public function from_user()
     {
         return $this->belongsTo(User::class, 'from_id');
     }
     public static function unread($id)
     {
         // if()
-        $auth_number = Auth::id();
+        $auth_number = Auth::guard('sanctum')->id();
         if ($auth_number <= $id) {
         $chat_number = $auth_number . '.' . $id;
         } else {
         $chat_number = $id . '.' . $auth_number;
         }
+      
         $unread = ChMessages::where('chat_number', $chat_number )
         ->where('to_id',$id)
-        ->where('seen' , 0)
+        ->where('seen' , '0')
         ->count();
-
         return $unread;
+    }
+    public static function lastMessage($id){
+        $auth_number = Auth::guard('sanctum')->id();
+        if ($auth_number <= $id) {
+        $chat_number = $auth_number . '.' . $id;
+        } else {
+        $chat_number = $id . '.' . $auth_number;
+        }
+        $last = ChMessages::where('chat_number', $chat_number )
+        // ->where('to_id',$id)
+        ->orderBy('created_at', 'DESC')
+        ->first();
+        return $last;
     }
 
 }

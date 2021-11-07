@@ -77,3 +77,4 @@ Route::get('chat',[ChatMessageController::class,'index']);
 Route::get('chat/{id}',[ChatMessageController::class,'show'])->name('chat.show');
 Route::get('messages/read/{id}' , [ChatMessageController::class , 'makeRead']);
 Route::post('chat',[ChatMessageController::class,'store'])->name('chat');
+Route::delete('chat/{id}',[ChatMessageController::class , 'destroy']);

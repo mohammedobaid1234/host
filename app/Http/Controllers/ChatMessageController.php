@@ -36,7 +36,11 @@ class ChatMessageController extends Controller
     $array = array_unique($this->array);
     foreach($array as $key=>$value){
       $user = User::find($value);
-      $this->users->push($user);
+      $this->users->push([
+        'user' => $user,
+        'unreadMessagesNumber' => ChMessages::unread($user->id),
+        'last_message' => ChMessages::lastMessage($user->id)
+      ]);
     }
     // return $this->users;
     // $users = ChMessage::where('to_id', Auth::id())->distinct()->get(['from_id']);
@@ -116,7 +120,7 @@ class ChatMessageController extends Controller
         $chat_number = $id . '.' . $auth_number;
     }
     // dd($chat_number);x
-    $prevMessages = ChMessages::where('chat_number', $chat_number)
+    $prevMessages = ChMessages::with(['to_user','from_user'])->where('chat_number', $chat_number)
     ->orderBy('created_at')
     ->get();
     // return $prevMessages;
@@ -136,7 +140,7 @@ class ChatMessageController extends Controller
       ],
       'data' => [
            'previous_messages' =>  $prevMessages,
-           'user' => $user
+          //  'user' => $user
       ]
     ]);
 
@@ -170,5 +174,32 @@ public function makeRead($id)
     ],
     'data' => ''
   ],200);
+  }
+
+  public function destroy($id)
+  {
+    $auth_number = Auth::guard('sanctum')->id();
+    if ($auth_number <= $id) {
+      $chat_number = $auth_number . '.' . $id;
+    } else {
+      $chat_number = $id . '.' . $auth_number;
+    }
+    // return $chat_number; 
+    $chats = ChMessages::where('chat_number' , $chat_number)
+    ->get();
+
+    foreach($chats as $chat){
+      ChMessages::delete($chat);
+    }
+      return response()->json([
+        'status' => [
+          'code' => 200,
+          'status' => true,
+          'message' => 'chat was deleted'
+      ],
+      'data' => ''
+    ],200);
+    
+    }
   }
 }
