@@ -35,11 +35,12 @@ class Comment extends Model
 
             $count = Comment::where('slug', 'LIKE', "{$slug}%")->count();
             if ($count) {
-                $slug .= '-' . ($count + 1);
+                $slug .= '-' . ($count + 2);
             }
             $comment->slug = $slug;
         });
     }
+    
     public function getTimeAttribute($value)
     {
         return $this->created_at->diffForHumans();

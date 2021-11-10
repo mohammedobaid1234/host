@@ -70,24 +70,32 @@ class ChatMessageController extends Controller
     } else {
       $chat_number = $id . '.' . $auth_number;
     }
-
+    if ($request->hasFile('image')) {
+      $uploadedFile = $request->file('image');
+      $attachment = $uploadedFile->store('/', 'upload');
+      $request->merge([
+          'attachment' => $attachment
+      ]);
+  }
+  // return $request;
+  
     $msg = ChMessages::create([
       
       'from_id' => Auth::guard('sanctum')->id(),
       'to_id' => $id,
       'body' => $request->message,
       'chat_number' => $chat_number,
-      'type' => 'user'
+      'type' => 'user',
+      'attachment'=> $request->attachment
     ])->save();
     
-
     return response()->json([
       'status' => [
         'code' => 201,
         'status' => true,
         'message' => 'insert new message'
     ],
-    'data' => $request->message
+    'data' => 'data is send'
     ],201);
   }
   
@@ -202,4 +210,3 @@ public function makeRead($id)
     
     }
   }
-}

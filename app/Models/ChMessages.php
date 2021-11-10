@@ -16,9 +16,12 @@ class ChMessages extends Model
         'body',
         'chat_number',
         'type',
-        'seen'
+        'seen',
+        'attachment'
     ];
-    
+    protected $appends =['attachment_path'];
+    protected $hidden = ['attachment'];
+
     public function to_user()
     {
         return $this->belongsTo(User::class, 'to_id');
@@ -59,6 +62,13 @@ class ChMessages extends Model
         ->orderBy('created_at', 'DESC')
         ->first();
         return $last;
+    }
+    public function getAttachmentPathAttribute($value)
+    {
+        if($this->attachment == null){
+            return null;
+        }
+        return asset('uploads/' . $this->attachment);
     }
 
 }
