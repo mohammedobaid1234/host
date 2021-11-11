@@ -10,7 +10,7 @@ class Ads extends Model
     use HasFactory;
 
     protected $fillable = ['image_url', 'type'];
-
+    protected $appends =['image_path',];
     public function getAdsTypeAttribute()
     {
         $type = $this->type;

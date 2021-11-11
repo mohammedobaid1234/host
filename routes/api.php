@@ -11,10 +11,12 @@ use App\Http\Controllers\Api\TweetsController;
 use App\Http\Controllers\Api\UsersController;
 use App\Http\Controllers\Api\VideosController;
 use App\Http\Controllers\Api\CommentsController;
+use App\Http\Controllers\Api\DeviceTokensController;
 use App\Http\Controllers\Api\LikesController;
 use App\Http\Controllers\Api\NotificationsController;
 use App\Http\Controllers\Api\ShareController;
 use App\Http\Controllers\ChatMessageController;
+use App\Models\DeviceToken;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -78,3 +80,6 @@ Route::get('chat/{id}',[ChatMessageController::class,'show'])->name('chat.show')
 Route::get('messages/read/{id}' , [ChatMessageController::class , 'makeRead']);
 Route::post('chat',[ChatMessageController::class,'store'])->name('chat');
 Route::delete('chat/{id}',[ChatMessageController::class , 'destroy']);
+
+Route::post('device/tokens', [DeviceTokensController::class ,'store'])
+    ->middleware('auth:sanctum');

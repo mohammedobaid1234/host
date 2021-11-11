@@ -141,5 +141,15 @@ class User extends Authenticatable
         }
         return 'أدمن';
     }
+
+    public function deviceTokens()
+    {
+        return $this->hasMany(DeviceToken::class);
+    }
+
+    public function routeNotificationForFcm()
+    {
+        return $this->deviceTokens()->pluck('token')->toArray();
+    }
     
 }

@@ -42,6 +42,7 @@ class CouncilsController extends Controller
     }
     public function main()
     {
+        
         return  response()->json([
             'status' => [
                 'code' => 200,
